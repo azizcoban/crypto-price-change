@@ -1,7 +1,15 @@
 import Head from "next/head";
-import Image from "next/image";
+import { useState } from "react";
+import useSWR from "swr";
+import { twMerge } from "tailwind-merge";
 
 export default function Home() {
+  const [interval, setInterval] = useState("4h");
+
+  const { data, error, isLoading } = useSWR(`/api/streamData/${interval}`);
+
+  console.log(data);
+
   return (
     <>
       <Head>
@@ -10,11 +18,51 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div>
-          <h1>
-            Welcome to <a href="https://nextjs.org">Next.js!</a>
-          </h1>
+      <main className="max-w-7xl mx-auto mt-10">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-3xl mb-10">Price Change Table for {interval}</h1>
+          <table className="table-fixed">
+            <thead>
+              <tr>
+                {Object.keys(data?.[0] || {}).map((key) => (
+                  <th key={key} className="w-auto px-4 py-2">
+                    {key}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {data?.map((row: any) => (
+                <tr key={`${row.symbol}`}>
+                  {Object.values(row).map((value: any, index: number) => (
+                    <td
+                      key={`${row.symbol}-${index}}`}
+                      className={twMerge(
+                        "border px-4 py-2",
+                        "text-neutral-50",
+                        (index === 2 || index === 1) &&
+                          value > 0 &&
+                          "text-green-500",
+                        (index === 2 || index === 1) &&
+                          value < 0 &&
+                          "text-red-500"
+                      )}
+                    >
+                      {value}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+
+              {isLoading && (
+                <tr>
+                  <td colSpan={Object.keys(data?.[0] || {}).length}>
+                    Loading...
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       </main>
     </>

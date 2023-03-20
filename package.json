@@ -9,22 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@binance/connector": "^2.0.1",
     "@types/node": "18.15.3",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "lodash.sortby": "^4.7.0",
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "swr": "^2.1.0",
     "typescript": "5.0.2"
   },
   "devDependencies": {
+    "@tsconfig/recommended": "^1.0.2",
+    "@types/lodash.sortby": "^4.7.7",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
     "postcss-nesting": "^11.2.1",
     "sass": "^1.59.3",
+    "tailwind-merge": "^1.10.0",
     "tailwindcss": "^3.2.7"
   }
 }
